@@ -28,6 +28,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 
         //2. start the service keeping the device awake when service is started. This service will perform scheduled task.
         startWakefulService(context, schedulingServiceIntent);
+
     }
 
     /**
@@ -51,8 +52,10 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 
         //3. set Repeat time. Always prefer using setInexactRepeating() method instead of setRepeating()
         //   when setInexactRepeating()::  Android synchronizes repeating alarms from multiple apps and fires them at the same time. So multiple WakeUps
+        //   are avoided
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), INTERVAL, pendingIntent);
+        Log.i("AlarmReceiver", "Alarm set complete.");
     }
 
 
@@ -66,6 +69,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         //1. Cancel pendingIntent of Alarm manager if its already set
         if(alarmManager != null) {
             alarmManager.cancel(pendingIntent);
+            Log.i("AlarmReceiver", "Alarm cancelled.");
         }
     }
 }
